@@ -10,67 +10,76 @@ Game Gacha waifu dengan fitur :
 #include<ctime>
 #include<string>
 using namespace std;
-
+// Database Waifu 1.1
 #pragma region Database_waifu
 struct waifu{
     string name;
     string rarity;
 };
-const int jumlahCommon = 5;
-const int jumlahUncommon = 5;
-const int jumlahRare = 5;
-const int jumlahLegendary = 5;
-const int jumlahMythical = 5;
+// Ubah jumlah waifu sesuai dengan raritynya ketika ingin menambahkan waifu
+const int jumlahCommon = 8;
+const int jumlahUncommon = 8;
+const int jumlahRare = 6;
+const int jumlahLegendary = 6;
+const int jumlahMythical = 7;
 
-// Database Waifu
-waifu common[jumlahCommon] = {
-    {"Sakura", "Common"},
+waifu common[jumlahCommon] = { // List waifu common
+    {"Sakura Haruno", "Common"},
+    {"Anzu Hoshino", "Common"},
     {"Tenten", "Common"},
     {"Mako Mankanshoku", "Common"},
+    {"Tsuyu Asui", "Uncommon"},
     {"Sasha Blouse", "Common"},
     {"Miyuki Shirogane", "Common"},
+    {"Anzu Hoshino", "Common"},
 };
-waifu uncommon[jumlahUncommon] = {
+waifu uncommon[jumlahUncommon] = { // List waifu uncommon
     {"Uraraka Ochako", "Uncommon"},
     {"Nobara Kugisaki", "Uncommon"},
     {"Kanao Tsuyuri", "Uncommon"},
     {"Lucy Heartfilia", "Uncommon"},
+    {"Mai Sakurajima", "Uncommon"},
     {"Miku Nakano", "Uncommon"},
+    {"Momo Yaoyorozu", "Common"},
 };
-waifu rare[jumlahRare] = {
+waifu rare[jumlahRare] = { // List waifu rare
     {"Asuka Langley Soryu", "Rare"},
     {"Rin Tohsaka", "Rare"},
     {"Yor Forger", "Rare"},
     {"Ram", "Rare"},
     {"Tsunade", "Rare"},
+    {"Maki Zenin", "Uncommon"},
 };
-waifu legendary[jumlahLegendary] = {
+waifu legendary[jumlahLegendary] = { // List waifu legendary
     {"Power", "Legendary"},
     {"Kaguya Shinomiya", "Legendary"},
     {"Emilia", "Legendary"},
     {"Kurumi Tokisaki", "Legendary"},
     {"Nami", "Legendary"},
+    {"Albedo", "Legendary"},
 };
-waifu mythical[jumlahMythical] = {
+waifu mythical[jumlahMythical] = { // List waifu mythical
     {"Saber (Artoria Pendragon)", "Mythical"},
+    {"Zero Two", "Rare"},
     {"Rem", "Mythical"},
     {"Asuna", "Mythical"},
     {"Makima", "Mythical"},
     {"Violet Evergarden", "Mythical"},
+    {"Frieren", "Mythical"},
 };
 #pragma endregion
-
+// Fungsi untuk cek waifu yang sudah punya
 bool cekDuplikat(string name, waifu inventory[], int jumlahWaifu){
-    for(int i = 0;i < jumlahWaifu; i++){
+    for(int i = 0;i < jumlahWaifu; i++){ // Mengecek waifu 1 per 1 yang ada di inventory
         if(inventory[i].name == name){
-            return true;
+            return true; // Ketika waifu yang didapat ada yang sama dengan yang di inventory, fungsi langsung menyatakan true
         }
     } 
     return false;
 }
-
+// Funsi untuk menambahkan waifu ke inventory
 void tambahKeInventory(string name,string rarity, waifu inventory[], int &jumlahWaifu, int &gems){
-    if(cekDuplikat(name, inventory, jumlahWaifu)){
+    if(cekDuplikat(name, inventory, jumlahWaifu)){ // Dijalankan ketika fungsi cekDuplikat bersifat true
         int reward = 0;
 
         if(rarity == "Common"){
@@ -96,7 +105,7 @@ void tambahKeInventory(string name,string rarity, waifu inventory[], int &jumlah
         cout << "  Duplikat!\n";
         cout << "  " << name << "-mu Terkonversi menjadi " << reward << " Gems!\n";
         cout << "-----------------------------------------\n\n";
-    } else{
+    } else{ // Dijalankan ketika fungsi cekDuplikat bersifat false
         inventory[jumlahWaifu].name = name;
         inventory[jumlahWaifu].rarity = rarity;
         jumlahWaifu++;
@@ -104,18 +113,18 @@ void tambahKeInventory(string name,string rarity, waifu inventory[], int &jumlah
         cout << "----------------------------------------\n";
     }
 }
-
+// Fungsi utama untuk gacha waifu
 void gacha(waifu inventory[], int &jumlahWaifu, int &gems,const int harga){
-    if(gems < harga){
+    if(gems < harga){ // Mengecek perbandingan antara gems dan harga gacha
         cout << "  Gems tidak Cukup\n";
         cout << "  Miskin lu\n";
 
-    } else{
+    } else{ // Dijalankan ketika gems lebih besar dari harga atau false
         gems -= harga;
-        int roll = rand() % 100 + 1;
+        int roll = rand() % 100 + 1; // Sistem gacha utama dari 1 sampai 100
 
         if(roll <= 60){
-            int randomIndex = rand() % jumlahCommon;
+            int randomIndex = rand() % jumlahCommon; // Sistem gacha dengan ruang lingkup jumlahCommon
             cout << "\n";
             cout << "========================================\n";
             cout << "            > SUMMONED! <\n";
@@ -127,7 +136,7 @@ void gacha(waifu inventory[], int &jumlahWaifu, int &gems,const int harga){
             cout << "========================================\n";
             tambahKeInventory(common[randomIndex].name, common[randomIndex].rarity, inventory, jumlahWaifu, gems);
         } else if(roll <= 85){
-            int randomIndex = rand() % jumlahUncommon;
+            int randomIndex = rand() % jumlahUncommon; // Sistem gacha dengan ruang lingkup jumlahUnommon
             cout << "\n";
             cout << "========================================\n";
             cout << "            > SUMMONED! <\n";
@@ -139,7 +148,7 @@ void gacha(waifu inventory[], int &jumlahWaifu, int &gems,const int harga){
             cout << "========================================\n";
             tambahKeInventory(uncommon[randomIndex].name, uncommon[randomIndex].rarity, inventory, jumlahWaifu, gems);
         } else if(roll <= 95){
-            int randomIndex = rand() % jumlahRare;
+            int randomIndex = rand() % jumlahRare; // Sistem gacha dengan ruang lingkup jumlahRare
             cout << "\n";
             cout << "========================================\n";
             cout << "            > SUMMONED! <\n";
@@ -151,7 +160,7 @@ void gacha(waifu inventory[], int &jumlahWaifu, int &gems,const int harga){
             cout << "========================================\n";
             tambahKeInventory(rare[randomIndex].name, rare[randomIndex].rarity, inventory, jumlahWaifu, gems);
         } else if(roll <= 99){
-            int randomIndex = rand() % jumlahLegendary;
+            int randomIndex = rand() % jumlahLegendary; // Sistem gacha dengan ruang lingkup jumlahLegendary
             cout << "\n";
             cout << "========================================\n";
             cout << "            > SUMMONED! <\n";
@@ -163,7 +172,7 @@ void gacha(waifu inventory[], int &jumlahWaifu, int &gems,const int harga){
             cout << "========================================\n";
             tambahKeInventory(legendary[randomIndex].name,legendary[randomIndex].rarity, inventory, jumlahWaifu, gems);
         } else if(roll <=100){
-            int randomIndex = rand() % jumlahMythical;
+            int randomIndex = rand() % jumlahMythical; // Sistem gacha dengan ruang lingkup jumlahMythical
             cout << "\n";
             cout << "========================================\n";
             cout << "            > SUMMONED! <\n";
@@ -177,61 +186,61 @@ void gacha(waifu inventory[], int &jumlahWaifu, int &gems,const int harga){
         }
     }
 }
-
+// Funsi untuk membuka waifu yang sudah punya
 void fungsiInventory(waifu inventory[],int jumlahWaifu){
     cout << "\n";
     cout << "==============================\n";
     cout << "\tList Waifumu \n";
     cout << "==============================\n";
 
-    if(jumlahWaifu == 0){
+    if(jumlahWaifu == 0){ //Dijalankan ketika tidak punya waifu
         cout << "  Kamu Belum Punya Waifu 1 pun..\n\n";
-    } else{
+    } else{ // Dijalankan ketika mempunyai waifu minimal 1
         for (int i = 0; i < jumlahWaifu; i++){
             cout << i + 1 << ". " << inventory[i].name << " [" << inventory[i].rarity << "]\n";
         }
     }
 }
-
+// Fungsi untuk membuka list waifu di Database Waifu
 void listRarity(){
     cout << "\n";
     cout << "==============================\n";
     cout << "\tCommon(60%)\n";
     cout << "==============================\n";
-    for(int i = 0; i < jumlahCommon; i++){
+    for(int i = 0; i < jumlahCommon; i++){ // Menampilkan semua list waifu Common
         cout << i + 1 << ". " << common[i].name << "\n";
     }
     cout << "\n";
     cout << "\n==============================\n";
     cout << "\tUncommon(25%)\n";
     cout << "==============================\n";
-    for(int i = 0; i < jumlahUncommon; i++){
+    for(int i = 0; i < jumlahUncommon; i++){ // Menampilkan semua list waifu Uncommon
         cout << i + 1 << ". " << uncommon[i].name << "\n";
     }
     cout << "\n";
     cout << "==============================\n";
     cout << "\tRare(10%)\n";
     cout << "==============================\n";
-    for(int i = 0; i < jumlahRare; i++){
+    for(int i = 0; i < jumlahRare; i++){ // Menampilkan semua list waifu Rare
         cout << i + 1 << ". " << rare[i].name << "\n";
     }
     cout << "\n";
     cout << "==============================\n";
     cout << "\tLegendary(4%)\n";
     cout << "==============================\n";
-    for(int i = 0; i < jumlahLegendary; i++){
+    for(int i = 0; i < jumlahLegendary; i++){ // Menampilkan semua list waifu Legendary
         cout << i + 1 << ". " << legendary[i].name << "\n";
     }
     cout << "\n";
     cout << "==============================\n";
     cout << "\tMythical(1%)\n";
     cout << "==============================\n";
-    for(int i = 0; i < jumlahMythical; i++){
+    for(int i = 0; i < jumlahMythical; i++){ // Menampilkan semua list waifu Mythical
         cout << i + 1 << ". " << mythical[i].name << "\n";
     }
     cout << "\n";
 }
-
+// Fungsi untuk menghapus waifu dari inventory
 void cerai(waifu inventory[], int &jumlahWaifu, int &gems){
     int reward = 0;
     int nomor;
@@ -314,7 +323,7 @@ void cerai(waifu inventory[], int &jumlahWaifu, int &gems){
         }
     }
 }
-
+// Fungsi utama untuk menjalankan fungsi-fungsi lainnya
 int main (){
 
     srand(time(0));
@@ -340,7 +349,7 @@ int main (){
         cout << "  [4] List Waifu\n";
         cout << "  [5] Keluar\n";
         cout << "-----------------------------------------\n";
-        cout << "  Pilihanmu : ";
+        cout << "  Pilihanmu(1-5) : ";
         cin >> pilihan;
 
         if(pilihan == 1){
